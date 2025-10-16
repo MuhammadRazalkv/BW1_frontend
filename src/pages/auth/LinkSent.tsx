@@ -17,7 +17,7 @@ const LinkSent = () => {
 					const res = await verifyEmail(token);
 					if (res.success) {
 						setStatus('success');
-						setMessage(res.message + 'Redirecting to login page..');
+						setMessage(res.message + ' Redirecting to login page..');
 						localStorage.clear();
 						setTimeout(() => {
 							navigate('/login');

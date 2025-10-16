@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { login } from '@/api/user';
+import { useDispatch } from 'react-redux';
+import { loginDispatch } from '@/redux/authSlice';
 const Login = () => {
 	const [identifier, setIdentifier] = useState('');
 	const [password, setPassword] = useState('');
@@ -20,6 +22,7 @@ const Login = () => {
 	const isPhone = /^[0-9]{10}$/.test(identifier);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const submit = async () => {
 		if (!isEmail && !isPhone) {
 			setError('Please enter a valid email or phone number');
@@ -37,7 +40,8 @@ const Login = () => {
 			};
 			const res = await login(data);
 			if (res.success) {
-                navigate('/dashboard')
+				dispatch(loginDispatch({ token: res.accessToken }));
+				navigate('/dashboard');
 			}
 		} catch (error) {
 			setError(error instanceof Error ? error.message : 'Failed to login');
@@ -81,7 +85,7 @@ const Login = () => {
 					</form>
 				</CardContent>
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full">
+					<Button type="submit" className="w-full" onClick={submit}>
 						Login
 					</Button>
 				</CardFooter>

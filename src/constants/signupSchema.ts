@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 export const signupSchema = z
 	.object({
-		firstName: z.string().trim().min(2, 'First name must be at least 2 characters').max(20,'First name cannot exceed 20 characters'),
-		lastName: z.string().trim().min(1,'Last name must be at least 2 characters').max(20,'Last name cannot exceed 20 characters'),
+		firstName: z.string().min(2, 'First name must be at least 2 characters').max(20,'First name cannot exceed 20 characters'),
+		lastName: z.string().min(1,'Last name must be at least 2 characters').max(20,'Last name cannot exceed 20 characters'),
 		email: z.email('Invalid email'),
 		phone: z.string().length(10, 'Invalid phone number'),
 		dob: z.string().refine((date) => {

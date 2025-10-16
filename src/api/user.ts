@@ -33,7 +33,7 @@ export async function resendVerification(email: string) {
 }
 export async function login(data: { email?: string; phone?: string; password: string }) {
 	try {
-		const response = await axiosInstance.post(`/login`, { data });
+		const response = await axiosInstance.post(`/login`,  data );
 		return response.data;
 	} catch (err) {
 		if (axios.isAxiosError(err) && err.response) {

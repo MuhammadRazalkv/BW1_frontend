@@ -5,6 +5,9 @@ import PublicRoute from './routes/PublicRoute';
 import Signup from './pages/auth/Signup';
 import LinkSent from './pages/auth/LinkSent';
 import Login from './pages/auth/Login';
+import ProtectedRoute from './routes/ProtectedRoute';
+import Dashboard from './pages/Dashboard';
+import Layout from './components/Layout';
 function App() {
 	return (
 		<>
@@ -14,6 +17,12 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/verify-email" element={<LinkSent />} />
 					<Route path="/login" element={<Login />} />
+				</Route>
+				{/* Protected Route  */}
+				<Route element={<ProtectedRoute />}>
+					<Route element={<Layout />}>
+						<Route path="/dashboard" element={<Dashboard />} />
+					</Route>
 				</Route>
 			</Routes>
 		</>
