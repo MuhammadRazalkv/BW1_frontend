@@ -47,7 +47,9 @@ export const Signup = () => {
 				localStorage.setItem('email', res.email);
 			}
 		} catch (error) {
+			
 			if (error instanceof Error) {
+				console.log(error.message);
 				setError(error.message as string);
 			} else {
 				setError('Unexpected error occurred');
@@ -126,7 +128,7 @@ export const Signup = () => {
 						</div>
 					</CardContent>
 					<CardFooter className="w-full flex justify-center items-center">
-						<Button type="submit" size={'lg'} disabled={!isValid}>
+						<Button type="submit" size={'lg'} >
 							Sign Up
 						</Button>
 					</CardFooter>

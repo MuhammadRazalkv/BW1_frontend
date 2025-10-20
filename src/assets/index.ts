@@ -1,0 +1,1 @@
+export {default as Default_Pfp } from './Default_pfp.svg'

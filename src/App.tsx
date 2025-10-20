@@ -8,6 +8,7 @@ import Login from './pages/auth/Login';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
+import Profile from './pages/Profile';
 function App() {
 	return (
 		<>
@@ -22,6 +23,7 @@ function App() {
 				<Route element={<ProtectedRoute />}>
 					<Route element={<Layout />}>
 						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/profile" element={<Profile />} />
 					</Route>
 				</Route>
 			</Routes>
