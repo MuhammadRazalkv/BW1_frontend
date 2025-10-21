@@ -65,6 +65,19 @@ export async function updateUserInfo(data: { field: keyof IUser; value: string }
 		}
 	}
 }
+export async function updateUserProfileImage(formData: FormData) {
+
+	try {
+		const response = await axiosInstance.post('/upload-profile', formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		});
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
 export async function updateUserPref(value: string[]) {
 	try {
 		const response = await axiosInstance.patch(`/preferences`, value);

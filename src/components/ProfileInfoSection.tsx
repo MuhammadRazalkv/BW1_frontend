@@ -7,16 +7,59 @@ import { useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import EditDialog from './EditDialog';
 import { IUser } from '@/interfaces/userInterface';
+import { toast } from 'sonner';
+import { updateUserProfileImage } from '@/api/user';
 
 const ProfileInfoSection = ({ user, setUser }: ProfileInfoProps) => {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [toUpdate, setToUpdate] = useState<{ field: keyof IUser; value: string | number }>();
+
 	const handleOnClick = (field: keyof IUser, value: string | number) => {
 		if (field !== 'email') {
 			setIsDialogOpen(true);
 			setToUpdate({ field, value });
 		}
 	};
+
+	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+		const maxSize = 2 * 1024 * 1024; // 2MB
+
+		if (!validTypes.includes(file.type)) {
+			toast.error('Only JPG, PNG, or WEBP images are allowed.');
+			return;
+		}
+
+		if (file.size > maxSize) {
+			toast.error('File size must be less than 2MB.');
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append('profilePic', file);
+
+		try {
+			const res = await updateUserProfileImage(formData);
+			if (res.success) {
+				if (!user) return;
+
+				setUser({
+					...user,
+					profilePic: res.url,
+				});
+				console.log(user);
+				
+				toast.success('Profile image updated successfully.');
+			}
+		} catch (err) {
+			toast.error('Failed to upload image.');
+			console.error(err);
+		}
+	};
+
 	return (
 		<>
 			<div className="flex justify-center items-start  bg-gray-100">
@@ -34,7 +77,7 @@ const ProfileInfoSection = ({ user, setUser }: ProfileInfoProps) => {
 					{/* Profile Picture */}
 					<div className="text-center mb-4">
 						<div className="relative w-32 h-32 mx-auto hover:opacity-90 transition">
-							<input type="file" id="profilePicInput" className="hidden" accept="image/*" />
+							<input type="file" id="profilePicInput" className="hidden" accept="image/*" onChange={handleFileChange} />
 							<label htmlFor="profilePicInput" className="cursor-pointer block w-full h-full">
 								<img
 									src={user.profilePic ?? Default_Pfp}
