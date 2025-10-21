@@ -1,4 +1,6 @@
 import { userInfo } from '@/api/user';
+import PasswordSection from '@/components/PasswordSection';
+import PreferenceSection from '@/components/PreferenceSection';
 import ProfileInfoSection from '@/components/ProfileInfoSection';
 import { Button } from '@/components/ui/button';
 import { IUser } from '@/interfaces/userInterface';
@@ -51,9 +53,7 @@ const Profile = () => {
 				<div className="max-w-2xl mx-auto h-full">
 					{activeSection === 'info' && user && <ProfileInfoSection setUser={setUser} user={user} />}
 					{activeSection === 'pref' && (
-						<div className="bg-white rounded-lg shadow-md p-6">
-							<p>Edit your preferences here.</p>
-						</div>
+						<PreferenceSection />
 					)}
 					{activeSection === 'articles' && (
 						<div className="bg-white rounded-lg shadow-md p-6">
@@ -61,9 +61,7 @@ const Profile = () => {
 						</div>
 					)}
 					{activeSection === 'password' && (
-						<div className="bg-white rounded-lg shadow-md p-6">
-							<p>Change your password here.</p>
-						</div>
+						<PasswordSection />
 					)}
 				</div>
 			</main>

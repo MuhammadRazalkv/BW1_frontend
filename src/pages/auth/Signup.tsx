@@ -37,7 +37,6 @@ export const Signup = () => {
 	};
 
 	const onSubmit = async (data: SignupFormData) => {
-		console.log(import.meta.env.VITE_API_URL);
 
 		try {
 			setError('');
@@ -49,7 +48,6 @@ export const Signup = () => {
 		} catch (error) {
 			
 			if (error instanceof Error) {
-				console.log(error.message);
 				setError(error.message as string);
 			} else {
 				setError('Unexpected error occurred');

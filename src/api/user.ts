@@ -65,3 +65,23 @@ export async function updateUserInfo(data: { field: keyof IUser; value: string }
 		}
 	}
 }
+export async function getPreferences() {
+	try {
+		const response = await axiosInstance.get(`/preferences`);
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
+export async function changePassword(currentPassword: string, newPassword: string) {
+	try {
+		const response = await axiosInstance.patch(`/change-password`, { currentPassword, newPassword });
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
