@@ -9,6 +9,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import Profile from './pages/Profile';
+import CreateArticle from './pages/CreateArticle';
 function App() {
 	return (
 		<>
@@ -24,6 +25,7 @@ function App() {
 					<Route element={<Layout />}>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/profile" element={<Profile />} />
+						<Route path="/create-article" element={<CreateArticle />} />
 					</Route>
 				</Route>
 			</Routes>

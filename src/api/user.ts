@@ -1,7 +1,6 @@
 import axios from 'axios';
 import axiosInstance from './axios';
 import { SignupFormData } from '@/constants/signupSchema';
-import { ProfileInfoProps } from '@/components/ProfileInfoSection';
 import { IUser } from '@/interfaces/userInterface';
 export async function createUser(data: SignupFormData) {
 	try {
