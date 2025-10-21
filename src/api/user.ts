@@ -65,6 +65,16 @@ export async function updateUserInfo(data: { field: keyof IUser; value: string }
 		}
 	}
 }
+export async function updateUserPref(value: string[]) {
+	try {
+		const response = await axiosInstance.patch(`/preferences`, value);
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
 export async function getPreferences() {
 	try {
 		const response = await axiosInstance.get(`/preferences`);
