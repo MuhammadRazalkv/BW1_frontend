@@ -1,4 +1,4 @@
-import { loginDispatch } from '@/redux/authSlice';
+import { loginDispatch, logoutDispatch } from '@/redux/authSlice';
 import { store } from '@/redux/store';
 import axios from 'axios';
 
@@ -23,14 +23,16 @@ axiosInstance.interceptors.response.use(
 	async (error) => {
 		const originalRequest = error.config;
 		if (error.response?.status === 401 && !originalRequest._retry) {
+			const dispatch = store.dispatch;
 			originalRequest._retry = true;
 			try {
-				const { data } = await axiosInstance.post('/refresh');
-				const dispatch = store.dispatch;
+				const { data } = await axios.post('/users/refresh');
+
 				dispatch(loginDispatch({ token: data.accessToken }));
 				originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 				return axiosInstance(originalRequest);
 			} catch (err) {
+				dispatch(logoutDispatch());
 				window.location.href = '/login';
 			}
 		}

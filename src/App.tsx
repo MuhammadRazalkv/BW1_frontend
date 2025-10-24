@@ -10,6 +10,8 @@ import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import Profile from './pages/Profile';
 import CreateArticle from './pages/CreateArticle';
+import NotFound from './pages/NotFound';
+import EditArticle from './pages/EditArticle';
 function App() {
 	return (
 		<>
@@ -26,8 +28,10 @@ function App() {
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/create-article" element={<CreateArticle />} />
+						<Route path="/edit-article/:id" element={<EditArticle />} />
 					</Route>
 				</Route>
+				<Route path="/*" element={<NotFound />} />
 			</Routes>
 		</>
 	);

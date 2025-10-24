@@ -7,13 +7,13 @@ export const articleSchema = z.object({
 	tags: z.array(z.string()).optional(),
 	image: z
 		.instanceof(File)
+		.refine((file) => file, { message: 'Image is required' })
 		.refine((file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type), {
 			message: 'Only JPG, PNG, or WEBP images are allowed',
 		})
 		.refine((file) => file.size <= 2 * 1024 * 1024, {
 			message: 'Image size must be less than 2MB',
-		})
-		.optional(),
+		}).optional(),
 });
 
 export type ArticleFormData = z.infer<typeof articleSchema>;

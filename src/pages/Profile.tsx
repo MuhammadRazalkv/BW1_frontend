@@ -1,4 +1,5 @@
 import { userInfo } from '@/api/user';
+import MyArticles from '@/components/MyArticles';
 import PasswordSection from '@/components/PasswordSection';
 import PreferenceSection from '@/components/PreferenceSection';
 import ProfileInfoSection from '@/components/ProfileInfoSection';
@@ -52,17 +53,9 @@ const Profile = () => {
 			<main className="flex-1 overflow-y-auto p-4 sm:p-6">
 				<div className="max-w-2xl mx-auto h-full">
 					{activeSection === 'info' && user && <ProfileInfoSection setUser={setUser} user={user} />}
-					{activeSection === 'pref' && (
-						<PreferenceSection />
-					)}
-					{activeSection === 'articles' && (
-						<div className="bg-white rounded-lg shadow-md p-6">
-							<p>List your articles here.</p>
-						</div>
-					)}
-					{activeSection === 'password' && (
-						<PasswordSection />
-					)}
+					{activeSection === 'pref' && <PreferenceSection />}
+					<div className="w-full max-w-6xl mx-auto">{activeSection === 'articles' && <MyArticles />}</div>
+					{activeSection === 'password' && <PasswordSection />}
 				</div>
 			</main>
 		</div>
