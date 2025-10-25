@@ -20,7 +20,7 @@ interface ArticleFormProps {
 
 const ArticleForm: React.FC<ArticleFormProps> = ({ type, originalArticle }) => {
 	const navigate = useNavigate();
-
+	const [submitting, setSubmitting] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -64,6 +64,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ type, originalArticle }) => {
 			});
 
 			let res;
+			setSubmitting(true);
 			if (type === 'add') {
 				res = await createArticle(formData);
 			} else if (type === 'edit' && originalArticle?.id) {
@@ -74,16 +75,17 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ type, originalArticle }) => {
 
 			if (res && res.success) {
 				toast.success(`Article ${type === 'add' ? 'created' : 'updated'} successfully!`);
-				setTimeout(() => navigate(type == 'add' ? '/dashboard' : '/profile'), 2000);
+				setTimeout(() => navigate('/profile'), 2000);
 			} else {
 				toast.error('Something went wrong.');
 			}
 		} catch (err: any) {
 			toast.error(err.message || 'Failed to process article');
+		} finally {
+			setSubmitting(false);
 		}
 	};
 
-	// ✅ Tag management
 	const addTag = (tag: string) => {
 		if (tag && !tags.includes(tag)) {
 			setValue('tags', [...tags, tag]);
@@ -197,8 +199,8 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ type, originalArticle }) => {
 					</div>
 
 					{/* Submit Button */}
-					<Button type="submit" className="w-full">
-						{type === 'add' ? 'Create Article' : 'Update Article'}
+					<Button type="submit" className="w-full" disabled={submitting}>
+						{submitting ? 'Submitting' : type === 'add' ? 'Create Article' : 'Update Article'}
 					</Button>
 				</form>
 			</CardContent>

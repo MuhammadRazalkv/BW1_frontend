@@ -1,16 +1,21 @@
-import { userInfo } from '@/api/user';
+import { logout, userInfo } from '@/api/user';
 import MyArticles from '@/components/MyArticles';
 import PasswordSection from '@/components/PasswordSection';
 import PreferenceSection from '@/components/PreferenceSection';
 import ProfileInfoSection from '@/components/ProfileInfoSection';
 import { Button } from '@/components/ui/button';
 import { IUser } from '@/interfaces/userInterface';
+import { logoutDispatch } from '@/redux/authSlice';
+import { LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 const Profile = () => {
 	const [user, setUser] = useState<null | IUser>(null);
 	const [activeSection, setActiveSection] = useState('info');
-
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const sections = [
 		{ id: 'info', label: 'Personal Info' },
 		{ id: 'pref', label: 'Preferences' },
@@ -31,6 +36,17 @@ const Profile = () => {
 		};
 		fetchUser();
 	}, []);
+	const handleLogout = async () => {
+		try {
+			const res = await logout();
+			if (res.success) {
+				dispatch(logoutDispatch());
+				navigate('/login');
+			}
+		} catch (error) {
+			toast.error('Failed to logout');
+		}
+	};
 	return (
 		<div className="h-full flex flex-col md:flex-row overflow-hidden">
 			{/* Sidebar */}
@@ -46,6 +62,11 @@ const Profile = () => {
 							{section.label}
 						</Button>
 					))}
+				</div>
+				<div className="p-4 border-t" onClick={handleLogout}>
+					<Button variant="destructive" className="w-full">
+						<LogOut /> Logout
+					</Button>
 				</div>
 			</aside>
 

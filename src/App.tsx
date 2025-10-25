@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import CreateArticle from './pages/CreateArticle';
 import NotFound from './pages/NotFound';
 import EditArticle from './pages/EditArticle';
+import Article from './pages/Article';
 function App() {
 	return (
 		<>
@@ -29,6 +30,7 @@ function App() {
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/create-article" element={<CreateArticle />} />
 						<Route path="/edit-article/:id" element={<EditArticle />} />
+						<Route path="/article/:id" element={<Article />} />
 					</Route>
 				</Route>
 				<Route path="/*" element={<NotFound />} />

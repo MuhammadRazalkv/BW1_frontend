@@ -26,7 +26,11 @@ axiosInstance.interceptors.response.use(
 			const dispatch = store.dispatch;
 			originalRequest._retry = true;
 			try {
-				const { data } = await axios.post('/users/refresh');
+				const { data } = await axios.post(
+					`${import.meta.env.VITE_API_URL}/users/refresh`,
+					{},
+					{ withCredentials: true }
+				);
 
 				dispatch(loginDispatch({ token: data.accessToken }));
 				originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;

@@ -65,7 +65,6 @@ export async function updateUserInfo(data: { field: keyof IUser; value: string }
 	}
 }
 export async function updateUserProfileImage(formData: FormData) {
-
 	try {
 		const response = await axiosInstance.post('/upload-profile', formData, {
 			headers: { 'Content-Type': 'multipart/form-data' },
@@ -100,6 +99,16 @@ export async function getPreferences() {
 export async function changePassword(currentPassword: string, newPassword: string) {
 	try {
 		const response = await axiosInstance.patch(`/change-password`, { currentPassword, newPassword });
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
+export async function logout() {
+	try {
+		const response = await axiosInstance.post(`/logout`);
 		return response.data;
 	} catch (err) {
 		if (axios.isAxiosError(err) && err.response) {

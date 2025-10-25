@@ -26,7 +26,7 @@ const EditArticle = () => {
 				toast.error(error instanceof Error ? error.message : 'Failed to fetch info');
 			}
 		};
-        fetchArticle()
+		fetchArticle();
 	}, [id]);
 	return <ArticleForm type="edit" originalArticle={article} />;
 };
