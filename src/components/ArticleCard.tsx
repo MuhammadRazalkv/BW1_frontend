@@ -10,8 +10,8 @@ import { Button } from './ui/button';
 interface ArticleCardProps {
 	article: IArticleList;
 	mode: 'view' | 'edit';
-	setSelectedId: React.Dispatch<React.SetStateAction<string | null>>;
-	setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setSelectedId?: React.Dispatch<React.SetStateAction<string | null>>;
+	setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId, setIsDialogOpen }) => {
@@ -30,8 +30,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId,
 					className="absolute top-2 right-2 z-20 rounded-full opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
 					onClick={(e) => {
 						e.stopPropagation();
-						setIsDialogOpen(true);
-						setSelectedId(article.id);
+						if (setIsDialogOpen && setSelectedId) {
+							setIsDialogOpen(true);
+							setSelectedId(article.id);
+						}
 					}}
 				>
 					<MdDeleteOutline />
@@ -54,7 +56,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId,
 					{/* Title */}
 					<CardHeader className="p-0 mb-2">
 						<CardTitle className="text-lg sm:text-xl font-semibold text-gray-900 line-clamp-2 hover:text-indigo-600 transition-colors duration-200">
-							{article.title.slice(0,15)}.....
+							{article.title.slice(0, 15)}.....
 						</CardTitle>
 					</CardHeader>
 
