@@ -22,7 +22,12 @@ axiosInstance.interceptors.response.use(
 	(response) => response,
 	async (error) => {
 		const originalRequest = error.config;
-		if (error.response?.status === 401 && !originalRequest._retry) {
+		const skipUrls = ['/login', '/register', '/verify-email', '/refresh'];
+		if (
+			error.response?.status === 401 &&
+			!originalRequest._retry &&
+			!skipUrls.some((url) => originalRequest.url?.includes(url))
+		) {
 			originalRequest._retry = true;
 			try {
 				const { data } = await axiosInstance.post('/refresh');
