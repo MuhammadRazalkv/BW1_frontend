@@ -1,6 +1,7 @@
 import { resendVerification, verifyEmail } from '@/api/user';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { messages } from '@/constants/messages';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 const LinkSent = () => {
@@ -17,7 +18,7 @@ const LinkSent = () => {
 					const res = await verifyEmail(token);
 					if (res.success) {
 						setStatus('success');
-						setMessage(res.message + ' Redirecting to login page..');
+						setMessage(res.message + messages.REDIRECTING_LOGIN);
 						localStorage.clear();
 						setTimeout(() => {
 							navigate('/login');
@@ -25,12 +26,12 @@ const LinkSent = () => {
 					}
 				} catch (error) {
 					setStatus('error');
-					setMessage(error instanceof Error ? error.message : 'Link expired or invalid. Please request a new one.');
+					setMessage(error instanceof Error ? error.message : messages.INVALID_LINK);
 				}
 			};
 			fetchEmailStatus();
 		} else {
-			setMessage('We’ve sent a verification link to your email.');
+			setMessage(messages.SEND_VERIFICATION);
 		}
 	}, [token]);
 
@@ -39,14 +40,14 @@ const LinkSent = () => {
 			if (email) {
 				const res = await resendVerification(email);
 				if (res.success) {
-					setMessage(res.message || 'A new verification link has been sent to your email!');
+					setMessage(res.message || messages.NEW_VERIFICATION_LINK);
 				}
 				setStatus('pending');
 			} else {
 				setMessage('Email not found');
 			}
 		} catch (error) {
-			setMessage(error instanceof Error ? error.message : 'Failed to send verification email!.');
+			setMessage(error instanceof Error ? error.message : messages.EMAIL_SEND_FAILED);
 		}
 	};
 

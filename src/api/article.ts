@@ -1,3 +1,4 @@
+import { messages } from '@/constants/messages';
 import axiosInstance from './articleInstance';
 import axios from 'axios';
 
@@ -11,12 +12,12 @@ export async function createArticle(formData: FormData) {
 		if (axios.isAxiosError(err) && err.response) {
 			throw new Error(err.response.data.message);
 		} else {
-			throw new Error('Network error or unexpected issue');
+			throw new Error(messages.NETWORK_ISSUE);
 		}
 	}
 }
 
-export async function getUserArticles(page:number = 1) {
+export async function getUserArticles(page: number = 1) {
 	try {
 		const response = await axiosInstance.get(`/articles?page=${page}`);
 		return response.data;
@@ -24,7 +25,7 @@ export async function getUserArticles(page:number = 1) {
 		if (axios.isAxiosError(err) && err.response) {
 			throw new Error(err.response.data.message);
 		} else {
-			throw new Error('Network error or unexpected issue');
+			throw new Error(messages.NETWORK_ISSUE);
 		}
 	}
 }
@@ -36,10 +37,10 @@ export async function getArticle(id: string) {
 	} catch (err) {
 		if (axios.isAxiosError(err) && err.response) {
 			const statusCode = err.response.status;
-			const message = err.response.data?.message || 'Something went wrong';
+			const message = err.response.data?.message || messages.NETWORK_ISSUE;
 			throw { status: statusCode, message };
 		} else {
-			throw { status: 0, message: 'Network error or unexpected issue' };
+			throw { status: 0, message: messages.NETWORK_ISSUE };
 		}
 	}
 }

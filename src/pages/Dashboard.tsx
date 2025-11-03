@@ -2,6 +2,7 @@ import { getArticleList } from '@/api/article';
 import ArticleCard from '@/components/ArticleCard';
 import { SkeletonCard } from '@/components/SkeletonCard';
 import { Button } from '@/components/ui/button';
+import { messages } from '@/constants/messages';
 import { IArticleList } from '@/interfaces/articleInterface';
 import { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
@@ -17,7 +18,6 @@ const Dashboard = () => {
 			setLoading(true);
 			try {
 				const res = await getArticleList(currPage);
-				console.log('res', res);
 
 				if (res.success) {
 					if (currPage === 1) setArticles(res.articles);
@@ -26,7 +26,7 @@ const Dashboard = () => {
 					setHasMore(res.hasMore);
 				}
 			} catch (error) {
-				toast.error(error instanceof Error ? error.message : 'Failed to fetch');
+				toast.error(error instanceof Error ? error.message : messages.FAILED_TO_FETCH);
 			} finally {
 				setLoading(false);
 			}

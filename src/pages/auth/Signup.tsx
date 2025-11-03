@@ -8,6 +8,7 @@ import { CATEGORIES } from '@/constants/categories';
 import { createUser } from '@/api/user';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { messages } from '@/constants/messages';
 
 export const Signup = () => {
 	const {
@@ -37,7 +38,6 @@ export const Signup = () => {
 	};
 
 	const onSubmit = async (data: SignupFormData) => {
-
 		try {
 			setError('');
 			const res = await createUser(data);
@@ -50,7 +50,7 @@ export const Signup = () => {
 			if (error instanceof Error) {
 				setError(error.message as string);
 			} else {
-				setError('Unexpected error occurred');
+				setError(messages.UNEXPECTED_ERROR);
 			}
 		}
 	};

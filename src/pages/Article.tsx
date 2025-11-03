@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { blockArticle, getArticle, toggleReaction } from '@/api/article';
 import { Button } from '@/components/ui/button';
 import Alert from '@/components/Alert';
+import { messages } from '@/constants/messages';
 
 const Article = () => {
 	const [article, setArticle] = useState<IArticle | null>(null);
@@ -78,13 +79,13 @@ const Article = () => {
 		try {
 			const res = await blockArticle(article?.id);
 			if (res.success) {
-				toast.success(`You’ve blocked this article, so it’s no longer viewable.`);
+				toast.success(`You've blocked this article, so it's no longer viewable.`);
 				setTimeout(() => {
 					navigate('/dashboard');
 				}, 2000);
 			}
 		} catch (error) {
-			toast.error(error instanceof Error ? error.message : 'Failed to update');
+			toast.error(error instanceof Error ? error.message : messages.FAILED_TO_UPDATE);
 		}
 	};
 	return (

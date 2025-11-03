@@ -4,6 +4,7 @@ import PasswordSection from '@/components/PasswordSection';
 import PreferenceSection from '@/components/PreferenceSection';
 import ProfileInfoSection from '@/components/ProfileInfoSection';
 import { Button } from '@/components/ui/button';
+import { messages } from '@/constants/messages';
 import { IUser } from '@/interfaces/userInterface';
 import { logoutDispatch } from '@/redux/authSlice';
 import { LogOut } from 'lucide-react';
@@ -31,7 +32,7 @@ const Profile = () => {
 					setUser(res.user);
 				}
 			} catch (error) {
-				toast.error(error instanceof Error ? error.message : 'Failed to fetch user info');
+				toast.error(error instanceof Error ? error.message : messages.FAILED_TO_FETCH);
 			}
 		};
 		fetchUser();

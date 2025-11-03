@@ -1,5 +1,6 @@
 import { getArticle } from '@/api/article';
 import ArticleForm from '@/components/ArticleForm';
+import { messages } from '@/constants/messages';
 import { IArticle } from '@/interfaces/articleInterface';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -23,7 +24,7 @@ const EditArticle = () => {
 					setArticle(res.article);
 				}
 			} catch (error) {
-				toast.error(error instanceof Error ? error.message : 'Failed to fetch info');
+				toast.error(error instanceof Error ? error.message : messages.FAILED_TO_FETCH);
 			}
 		};
 		fetchArticle();
