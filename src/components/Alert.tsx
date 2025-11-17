@@ -17,7 +17,7 @@ const Alert = ({
 	isOpen: boolean;
 	setIsOpen: (key: boolean) => void;
 	onSubmit: (id?: string) => void;
-	type: 'delete' | 'block';
+	type: 'delete' | 'block' | 'unblock';
 }) => {
 	return (
 		<AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -25,7 +25,7 @@ const Alert = ({
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently {type == 'block' ? 'block' : 'delete'} this article.
+						This action cannot be undone. This will permanently {type} this article.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

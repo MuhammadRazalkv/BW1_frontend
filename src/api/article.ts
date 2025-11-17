@@ -29,6 +29,18 @@ export async function getUserArticles(page: number = 1) {
 		}
 	}
 }
+export async function getBlockedArticles(page: number = 1) {
+	try {
+		const response = await axiosInstance.get(`/blocked?page=${page}`);
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		} else {
+			throw new Error(messages.NETWORK_ISSUE);
+		}
+	}
+}
 
 export async function getArticle(id: string) {
 	try {
@@ -93,6 +105,16 @@ export async function blockArticle(articleId: string) {
 export async function deleteArticle(articleId: string) {
 	try {
 		const response = await axiosInstance.delete(`/delete?articleId=${articleId}`);
+		return response.data;
+	} catch (err) {
+		if (axios.isAxiosError(err) && err.response) {
+			throw new Error(err.response.data.message);
+		}
+	}
+}
+export async function unblockArticle(articleId: string) {
+	try {
+		const response = await axiosInstance.patch(`/unblock?id=${articleId}`);
 		return response.data;
 	} catch (err) {
 		if (axios.isAxiosError(err) && err.response) {

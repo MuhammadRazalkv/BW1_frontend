@@ -24,7 +24,11 @@ const EditArticle = () => {
 					setArticle(res.article);
 				}
 			} catch (error) {
-				toast.error(error instanceof Error ? error.message : messages.FAILED_TO_FETCH);
+				if (error && typeof error === 'object' && 'message' in error) {
+					toast.error(String(error.message));
+				} else {
+					toast.error(messages.FAILED_TO_FETCH);
+				}
 			}
 		};
 		fetchArticle();

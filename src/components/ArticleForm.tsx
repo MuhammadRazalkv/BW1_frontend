@@ -71,7 +71,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ type, originalArticle }) => {
 				formData.append('articleId', originalArticle.id);
 				res = await updateArticle(formData);
 			}
-			console.log(res);
 
 			if (res && res.success) {
 				toast.success(`Article ${type === 'add' ? 'created' : 'updated'} successfully!`);

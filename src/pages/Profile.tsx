@@ -1,4 +1,5 @@
 import { logout, userInfo } from '@/api/user';
+import BlockedArticles from '@/components/BlockedArticles';
 import MyArticles from '@/components/MyArticles';
 import PasswordSection from '@/components/PasswordSection';
 import PreferenceSection from '@/components/PreferenceSection';
@@ -21,6 +22,7 @@ const Profile = () => {
 		{ id: 'info', label: 'Personal Info' },
 		{ id: 'pref', label: 'Preferences' },
 		{ id: 'articles', label: 'My Articles' },
+		{ id: 'blocked', label: 'Blocked Articles' },
 		{ id: 'password', label: 'Change Password' },
 	];
 
@@ -77,6 +79,7 @@ const Profile = () => {
 					{activeSection === 'info' && user && <ProfileInfoSection setUser={setUser} user={user} />}
 					{activeSection === 'pref' && <PreferenceSection />}
 					<div className="w-full max-w-6xl mx-auto">{activeSection === 'articles' && <MyArticles />}</div>
+					<div className="w-full max-w-6xl mx-auto">{activeSection === 'blocked' && <BlockedArticles />}</div>
 					{activeSection === 'password' && <PasswordSection />}
 				</div>
 			</main>

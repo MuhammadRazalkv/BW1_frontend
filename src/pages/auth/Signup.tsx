@@ -9,12 +9,14 @@ import { createUser } from '@/api/user';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { messages } from '@/constants/messages';
+import { Label } from '@/components/ui/label';
 
 export const Signup = () => {
+	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { errors },
 		setValue,
 		watch,
 	} = useForm<SignupFormData>({
@@ -38,6 +40,7 @@ export const Signup = () => {
 	};
 
 	const onSubmit = async (data: SignupFormData) => {
+		setLoading(true);
 		try {
 			setError('');
 			const res = await createUser(data);
@@ -46,12 +49,13 @@ export const Signup = () => {
 				localStorage.setItem('email', res.email);
 			}
 		} catch (error) {
-			
 			if (error instanceof Error) {
 				setError(error.message as string);
 			} else {
 				setError(messages.UNEXPECTED_ERROR);
 			}
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -91,7 +95,10 @@ export const Signup = () => {
 
 						{/* DOB */}
 						<div>
-							<Input {...register('dob')} type="date" />
+							<Label htmlFor="dob" className="text-xs font-light">
+								Date of birth
+							</Label>
+							<Input id="dob" {...register('dob')} type="date" />
 							{errors.dob && <p className="text-red-500 text-sm">{errors.dob.message}</p>}
 						</div>
 
@@ -126,8 +133,8 @@ export const Signup = () => {
 						</div>
 					</CardContent>
 					<CardFooter className="w-full flex justify-center items-center">
-						<Button type="submit" size={'lg'} >
-							Sign Up
+						<Button type="submit" size={'lg'} disabled={loading}>
+							{loading ? 'Submitting...' : 'Sign Up'}
 						</Button>
 					</CardFooter>
 					<Link className="text-xs ml-2 text-blue-500" to={'/login'}>

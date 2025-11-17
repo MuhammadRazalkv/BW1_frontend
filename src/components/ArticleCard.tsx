@@ -9,7 +9,7 @@ import { Button } from './ui/button';
 
 interface ArticleCardProps {
 	article: IArticleList;
-	mode: 'view' | 'edit';
+	mode: 'view' | 'edit' | 'block';
 	setSelectedId?: React.Dispatch<React.SetStateAction<string | null>>;
 	setIsDialogOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -17,11 +17,15 @@ interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId, setIsDialogOpen }) => {
 	const navigate = useNavigate();
 	const handleNavigate = (id: string) => {
-		navigate(mode == 'edit' ? `/edit-article/${id}` : `/article/${id}`);
+		if (mode !== 'block') {
+			navigate(mode == 'edit' ? `/edit-article/${id}` : `/article/${id}`);
+		}
 	};
 
 	return (
-		<Card className="relative w-full bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 cursor-pointer group h-[340px] flex flex-col justify-between">
+		<Card
+			className={`relative w-full bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200  group h-[340px] flex flex-col justify-between ${mode !== 'block' && 'cursor-pointer'}`}
+		>
 			{/* Delete button */}
 			{mode === 'edit' && (
 				<Button
@@ -47,7 +51,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId,
 					<img
 						src={article.imageUrl}
 						alt={article.title}
-						className={`w-full ${mode === 'edit' ? 'h-28 object-contain p-2' : 'h-36 object-cover'} rounded-t-2xl`}
+						className={`w-full ${mode !== 'view' ? 'h-28 object-contain p-2' : 'h-36 object-cover'} rounded-t-2xl`}
 					/>
 				)}
 
@@ -66,33 +70,53 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, mode, setSelectedId,
 							{article.tags?.slice(0, 3).map((tag: string, index: number) => (
 								<span
 									key={index}
-									className="text-xs sm:text-sm bg-indigo-50 px-2.5 py-1 rounded-full font-medium hover:bg-indigo-100 transition-all duration-200"
+									className="text-xs  bg-indigo-50 px-2.5 py-1 rounded-full font-medium hover:bg-indigo-100 transition-all duration-200"
 								>
 									#{tag}
 								</span>
 							))}
 							{article.tags && article.tags.length > 3 && (
-								<span className="text-xs sm:text-sm text-gray-500">+{article.tags.length - 3}</span>
+								<span className="text-xs  text-gray-500">+{article.tags.length - 3}</span>
 							)}
 						</div>
 					</CardContent>
 
 					{/* Footer with reactions */}
-					<CardFooter className="p-0 mt-auto border-t border-gray-100 pt-3">
-						<div className="w-full flex justify-between items-center text-gray-700">
-							<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium hover:text-indigo-600 transition-colors duration-200 cursor-pointer">
-								<AiOutlineLike className="text-lg" />
-								{article.likes}
-							</span>
-							<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium hover:text-rose-600 transition-colors duration-200 cursor-pointer">
-								<AiOutlineDislike className="text-lg" />
-								{article.dislikes}
-							</span>
-							{mode === 'edit' && (
-								<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium text-gray-900">
-									<ImBlocked className="text-lg" />
-									{article.blocks}
-								</span>
+					<CardFooter className="px-0 mt-auto border-t border-gray-100">
+						<div className="w-full flex items-center justify-between ">
+							{mode === 'block' ? (
+								<Button
+									variant="destructive"
+									className="cursor-pointer w-full h-full flex items-center justify-center"
+									onClick={(e) => {
+										e.stopPropagation();
+										if (setIsDialogOpen && setSelectedId) {
+											setIsDialogOpen(true);
+											setSelectedId(article.id);
+										}
+									}}
+								>
+									Unblock
+								</Button>
+							) : (
+								<>
+									<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium hover:text-indigo-600 transition-colors duration-200 cursor-pointer">
+										<AiOutlineLike className="text-lg" />
+										{article.likes}
+									</span>
+
+									<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium hover:text-rose-600 transition-colors duration-200 cursor-pointer">
+										<AiOutlineDislike className="text-lg" />
+										{article.dislikes}
+									</span>
+
+									{mode === 'edit' && (
+										<span className="flex items-center gap-1.5 text-sm sm:text-base font-medium text-gray-900">
+											<ImBlocked className="text-lg" />
+											{article.blocks}
+										</span>
+									)}
+								</>
 							)}
 						</div>
 					</CardFooter>

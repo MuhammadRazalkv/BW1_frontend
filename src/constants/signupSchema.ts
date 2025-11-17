@@ -3,17 +3,24 @@ import { z } from 'zod';
 export const fieldSchemas = {
 	firstName: z
 		.string()
-		.min(2, 'First name must be at least 2 characters')
-		.max(20, 'First name cannot exceed 20 characters'),
+		.trim()
+		.regex(/^[A-Za-z]{3,16}$/, 'First name can only contain letters')
+		.min(3, 'First name must be at least 3 characters')
+		.max(16, 'First name cannot exceed 16 characters'),
 
 	lastName: z
 		.string()
-		.min(1, 'Last name must be at least 2 characters')
-		.max(20, 'Last name cannot exceed 20 characters'),
+		.trim()
+		.regex(/^[A-Za-z ]{1,10}$/, 'Last name can only contain letters and spaces')
+		.min(1, 'Last name must be at least 1 character')
+		.max(10, 'Last name cannot exceed 10 characters'),
 
 	email: z.email('Invalid email'),
 
-	phone: z.string().length(10, 'Invalid phone number'),
+	phone: z
+		.string()
+		.trim()
+		.regex(/^[6-9]\d{9}$/, 'Invalid Indian phone number'),
 
 	dob: z.string().refine((date) => {
 		if (!date) return false;
@@ -22,12 +29,10 @@ export const fieldSchemas = {
 		const dobDate = new Date(year, month - 1, day);
 		const today = new Date();
 
-		// Calculate age
 		let age = today.getFullYear() - dobDate.getFullYear();
 		const monthDiff = today.getMonth() - dobDate.getMonth();
 		const dayDiff = today.getDate() - dobDate.getDate();
 
-		// Adjust if the birthday hasn't occurred yet this year
 		if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
 			age--;
 		}
@@ -36,12 +41,22 @@ export const fieldSchemas = {
 	}, 'You must be at least 13 years old'),
 };
 
+const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 export const signupSchema = z
 	.object({
 		...fieldSchemas,
-		password: z.string().min(6, 'Password must be at least 6 characters'),
-		confirmPassword: z.string().min(6, 'Confirm your password'),
-		preferences: z.array(z.string()).min(1, 'Add minimum of 1 preferences'),
+
+		password: z
+			.string()
+			.regex(
+				strongPasswordRegex,
+				'Password must be 8+ chars and include uppercase, lowercase, number & special character'
+			),
+
+		confirmPassword: z.string().min(1, 'Confirm your password'),
+
+		preferences: z.array(z.string()).min(1, 'Add at least 1 preference'),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
 		message: "Passwords don't match",

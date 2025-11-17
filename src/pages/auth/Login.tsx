@@ -16,6 +16,7 @@ import { login } from '@/api/user';
 import { useDispatch } from 'react-redux';
 import { loginDispatch } from '@/redux/authSlice';
 const Login = () => {
+	const [loading, setLoading] = useState(false);
 	const [identifier, setIdentifier] = useState('');
 	const [password, setPassword] = useState('');
 	const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
@@ -32,6 +33,7 @@ const Login = () => {
 			setError('Please enter a valid password');
 			return;
 		}
+		setLoading(true);
 		setError('');
 		try {
 			const data = {
@@ -45,6 +47,8 @@ const Login = () => {
 			}
 		} catch (error) {
 			setError(error instanceof Error ? error.message : 'Failed to login');
+		} finally {
+			setLoading(false);
 		}
 	};
 	return (
@@ -85,8 +89,8 @@ const Login = () => {
 					</form>
 				</CardContent>
 				<CardFooter className="flex-col gap-2">
-					<Button type="submit" className="w-full" onClick={submit}>
-						Login
+					<Button type="submit" className="w-full" onClick={submit} disabled={loading}>
+						{!loading ? 'Login' : 'Submitting...'}
 					</Button>
 				</CardFooter>
 			</Card>
